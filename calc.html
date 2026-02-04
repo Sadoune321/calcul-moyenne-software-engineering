@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Moyenne - Software Engineering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3eeff 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .specialty-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-top: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Navigation */
+        .semester-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+        
+        .semester-btn {
+            padding: 16px 30px;
+            background-color: white;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--gray);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .semester-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .semester-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        /* Calculator Section */
+        .calculator-section {
+            padding: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .title-icon {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .academic-year {
+            background: var(--light);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6f0ff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 25px;
+            margin-bottom: 35px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .info-box h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+        
+        .info-box p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        /* Modules Table */
+        .modules-container {
+            margin-bottom: 40px;
+        }
+        
+        .modules-table-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+        
+        .modules-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+        
+        .modules-table thead {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .modules-table th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .modules-table th:first-child {
+            border-top-left-radius: var(--border-radius);
+        }
+        
+        .modules-table th:last-child {
+            border-top-right-radius: var(--border-radius);
+        }
+        
+        .modules-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .modules-table tbody tr {
+            transition: var(--transition);
+        }
+        
+        .modules-table tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .modules-table tbody tr:nth-child(even) {
+            background-color: var(--light);
+        }
+        
+        .modules-table tbody tr:nth-child(even):hover {
+            background-color: rgba(67, 97, 238, 0.08);
+        }
+        
+        .ue-badge {
+            display: inline-block;
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .note-input {
+            width: 90px;
+            padding: 10px 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .note-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .module-average {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0 30px;
+        }
+        
+        .btn {
+            padding: 16px 35px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-calculate {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-calculate:hover {
+            background: linear-gradient(to right, var(--primary-dark), #2f4fdd);
+        }
+        
+        .btn-reset {
+            background-color: white;
+            color: var(--gray);
+            border: 2px solid var(--light-gray);
+        }
+        
+        .btn-reset:hover {
+            background-color: var(--light);
+            border-color: var(--gray);
+            color: var(--dark);
+        }
+        
+        /* Results Section */
+        .results-section {
+            margin: 40px 0;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .result-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-card h4 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .result-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 20px 0;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .result-value.passed {
+            color: var(--primary);
+        }
+        
+        .result-value.failed {
+            color: var(--danger);
+        }
+        
+        .result-details {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+        
+        .validation-status {
+            padding: 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            border-left: 4px solid;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .validation-status.passed {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        
+        .validation-status.failed {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--danger);
+            border-left-color: var(--danger);
+        }
+        
+        /* Formulas Section */
+        .formulas-section {
+            background: linear-gradient(135deg, #f9f5ff 0%, #f0ebff 100%);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin-top: 40px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .formulas-section h3 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .formula {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-left: 3px solid var(--primary);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--dark);
+            color: white;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+            
+            .logo-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 10px;
+            }
+            
+            header {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.9rem;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .semester-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .semester-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .calculator-section {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modules-table-container {
+                border-radius: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .logo-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.6rem;
+            }
+            
+            .result-value {
+                font-size: 2.2rem;
+            }
+            
+            .formulas-section {
+                padding: 20px;
+            }
+            
+            .formula {
+                padding: 15px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Animation for results */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>
+                    <div class="logo-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    Calculateur de Moyenne
+                </h1>
+                <p class="subtitle">Outil de calcul académique pour les étudiants en Software Engineering</p>
+                <div class="specialty-badge">
+                    <i class="fas fa-laptop-code"></i>
+                    Software Engineering
+                </div>
+            </div>
+        </header>
+        
+        <div class="semester-selector">
+            <button class="semester-btn active" data-semester="7">
+                <i class="fas fa-calendar-alt"></i> Semestre 7
+            </button>
+            <button class="semester-btn" data-semester="8">
+                <i class="fas fa-calendar-alt"></i> Semestre 8
+            </button>
+            <button class="semester-btn" data-semester="9">
+                <i class="fas fa-calendar-alt"></i> Semestre 9
+            </button>
+        </div>
+        
+        <div class="calculator-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-book-open title-icon"></i> 
+                    <span id="semester-title">Semestre 7 - Modules</span>
+                </h2>
+                <div class="academic-year">
+                    <i class="far fa-calendar-check"></i> 
+                    <span id="academic-year">2025/2026</span>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> Instructions d'utilisation</h3>
+                <p>Saisissez vos notes de contrôle continu (CC) et d'examen pour chaque module. Les notes doivent être comprises entre 0 et 20. La moyenne est calculée automatiquement avec la pondération standard (CC: 40%, Examen: 60%). Cliquez sur "Calculer la Moyenne" pour obtenir vos résultats.</p>
+            </div>
+            
+            <div class="modules-container">
+                <h3><i class="fas fa-list-alt"></i> Modules du semestre</h3>
+                <div class="modules-table-container">
+                    <table class="modules-table" id="modules-table">
+                        <thead>
+                            <tr>
+                                <th>Unité d'Enseignement</th>
+                                <th>Matière</th>
+                                <th>Coefficient</th>
+                                <th>Crédits</th>
+                                <th>Note CC (40%)</th>
+                                <th>Note Examen (60%)</th>
+                                <th>Moyenne Module</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modules-body">
+                            <!-- Les modules seront chargés ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-calculate" id="calculate-btn">
+                    <i class="fas fa-calculator"></i> Calculer la Moyenne
+                </button>
+                <button class="btn btn-reset" id="reset-btn">
+                    <i class="fas fa-redo"></i> Réinitialiser
+                </button>
+            </div>
+            
+            <div class="results-section">
+                <div class="results-grid" id="results-container" style="display: none;">
+                    <!-- Les résultats seront affichés ici -->
+                </div>
+                
+                <div id="validation-status" class="validation-status" style="display: none;"></div>
+            </div>
+            
+            <div class="formulas-section">
+                <h3><i class="fas fa-square-root-alt"></i> Méthodologie de calcul</h3>
+                <div class="formula">
+                    <strong>Moyenne d'un module :</strong> Moyenne = (CC × 0.4) + (Examen × 0.6)
+                </div>
+                <div class="formula">
+                    <strong>Moyenne générale pondérée :</strong> Moyenne = Σ(Moyenne_module × Coefficient) / Σ(Coefficients)
+                </div>
+                <div class="formula">
+                    <strong>Condition de validation :</strong> Moyenne générale ≥ 10/20
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <p class="copyright">© 2026 - Calculateur de Moyenne Universitaire</p>
+                <p>Développé pour les étudiants en Software Engineering</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Données des modules par semestre
+        const modulesData = {
+            7: [
+                { ue: "UEF1", matiere: "Concepts avancés de BD", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF1", matiere: "Gestion de projets (GP)", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF1", matiere: "Web avancé et Micro-services", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Data-Mining", coef: 3, credits: 5, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Compilation 2", coef: 3, credits: 5, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "Méthodes de management agiles", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "Réseaux et protocoles", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UED1", matiere: "IHM : Conception et évaluation des interfaces", coef: 2, credits: 3, cc: "", exam: "" }
+            ],
+            8: [
+                { ue: "UEF1", matiere: "Architecture et Gestion des SI Avancés", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF1", matiere: "Big-Data et BD NoSQL", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Architectures Logicielles", coef: 2, credits: 4, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Modèles et Gestion de Procédés Logiciels", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Test Logiciel et Assurance qualité", coef: 2, credits: 4, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "Modélisation et Evaluation des Performances", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "Systèmes d'exploitation Mobiles", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UET1", matiere: "Projet Pluridisciplinaire", coef: 3, credits: 4, cc: "", exam: "" }
+            ],
+            9: [
+                { ue: "UEF1", matiere: "Méthodes formelles pour GL", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF1", matiere: "Développement de logiciels embarqués", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Conception de jeux vidéo", coef: 3, credits: 4, cc: "", exam: "" },
+                { ue: "UEF2", matiere: "Internet of Things (IoT)", coef: 4, credits: 5, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "DevOps & Cloud Computing", coef: 4, credits: 5, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "Sécurité Logicielle", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UEM1", matiere: "Développement mobile", coef: 2, credits: 3, cc: "", exam: "" },
+                { ue: "UET1", matiere: "Aspects juridiques", coef: 1, credits: 2, cc: "", exam: "" }
+            ]
+        };
+
+        // État actuel
+        let currentSemester = 7;
+        let moduleNotes = {};
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSemesterModules(currentSemester);
+            setupEventListeners();
+            
+            // Charger les données sauvegardées si elles existent
+            loadSavedData();
+        });
+
+        // Charger les modules d'un semestre
+        function loadSemesterModules(semester) {
+            currentSemester = semester;
+            const modules = modulesData[semester];
+            const modulesBody = document.getElementById('modules-body');
+            modulesBody.innerHTML = '';
+            
+            // Mettre à jour le titre
+            document.getElementById('semester-title').textContent = `Semestre ${semester} - Modules`;
+            
+            // Mettre à jour l'année académique
+            const academicYear = document.getElementById('academic-year');
+            if (semester === 7) academicYear.textContent = "2025/2026";
+            else if (semester === 8) academicYear.textContent = "2025/2026";
+            else academicYear.textContent = "2026/2027";
+            
+            // Générer les lignes du tableau
+            modules.forEach((module, index) => {
+                const row = document.createElement('tr');
+                const moduleId = `module-${semester}-${index}`;
+                
+                // Charger les notes sauvegardées
+                const savedNotes = moduleNotes[moduleId] || { cc: module.cc, exam: module.exam };
+                
+                row.innerHTML = `
+                    <td><span class="ue-badge">${module.ue}</span></td>
+                    <td>${module.matiere}</td>
+                    <td>${module.coef}</td>
+                    <td>${module.credits}</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" min="0" max="20" step="0.01" 
+                                   class="note-input" id="${moduleId}-cc" 
+                                   value="${savedNotes.cc}" placeholder="0-20">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" min="0" max="20" step="0.01" 
+                                   class="note-input" id="${moduleId}-exam" 
+                                   value="${savedNotes.exam}" placeholder="0-20">
+                        </div>
+                    </td>
+                    <td class="module-average" id="${moduleId}-avg">-</td>
+                `;
+                modulesBody.appendChild(row);
+                
+                // Ajouter des écouteurs d'événements pour les champs de saisie
+                const ccInput = document.getElementById(`${moduleId}-cc`);
+                const examInput = document.getElementById(`${moduleId}-exam`);
+                
+                ccInput.addEventListener('input', function() {
+                    saveModuleNote(moduleId, 'cc', this.value);
+                    calculateModuleAverage(moduleId, module.coef);
+                });
+                
+                examInput.addEventListener('input', function() {
+                    saveModuleNote(moduleId, 'exam', this.value);
+                    calculateModuleAverage(moduleId, module.coef);
+                });
+                
+                // Calculer la moyenne du module si les notes existent
+                if (savedNotes.cc && savedNotes.exam) {
+                    calculateModuleAverage(moduleId, module.coef);
+                }
+            });
+            
+            // Mettre à jour les boutons de sélection de semestre
+            document.querySelectorAll('.semester-btn').forEach(btn => {
+                if (parseInt(btn.dataset.semester) === semester) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Cacher les résultats précédents
+            document.getElementById('results-container').style.display = 'none';
+            document.getElementById('validation-status').style.display = 'none';
+        }
+
+        // Configurer les écouteurs d'événements
+        function setupEventListeners() {
+            // Boutons de sélection de semestre
+            document.querySelectorAll('.semester-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const semester = parseInt(this.dataset.semester);
+                    loadSemesterModules(semester);
+                });
+            });
+            
+            // Bouton de calcul
+            document.getElementById('calculate-btn').addEventListener('click', calculateGlobalAverage);
+            
+            // Bouton de réinitialisation
+            document.getElementById('reset-btn').addEventListener('click', resetAll);
+        }
+
+        // Sauvegarder une note de module
+        function saveModuleNote(moduleId, type, value) {
+            if (!moduleNotes[moduleId]) {
+                moduleNotes[moduleId] = { cc: "", exam: "" };
+            }
+            moduleNotes[moduleId][type] = value;
+            
+            // Sauvegarder dans le localStorage
+            localStorage.setItem('moduleNotes', JSON.stringify(moduleNotes));
+            localStorage.setItem('currentSemester', currentSemester.toString());
+        }
+
+        // Charger les données sauvegardées
+        function loadSavedData() {
+            const savedNotes = localStorage.getItem('moduleNotes');
+            const savedSemester = localStorage.getItem('currentSemester');
+            
+            if (savedNotes) {
+                moduleNotes = JSON.parse(savedNotes);
+            }
+            
+            if (savedSemester) {
+                currentSemester = parseInt(savedSemester);
+                loadSemesterModules(currentSemester);
+            }
+        }
+
+        // Calculer la moyenne d'un module
+        function calculateModuleAverage(moduleId, coefficient) {
+            const ccInput = document.getElementById(`${moduleId}-cc`);
+            const examInput = document.getElementById(`${moduleId}-exam`);
+            const avgCell = document.getElementById(`${moduleId}-avg`);
+            
+            const cc = parseFloat(ccInput.value) || 0;
+            const exam = parseFloat(examInput.value) || 0;
+            
+            // Validation des notes
+            if ((ccInput.value && (cc < 0 || cc > 20)) || 
+                (examInput.value && (exam < 0 || exam > 20))) {
+                avgCell.textContent = "Erreur";
+                avgCell.style.color = "#f72585";
+                return null;
+            }
+            
+            if (ccInput.value && examInput.value) {
+                const moyenne = (cc * 0.4) + (exam * 0.6);
+                avgCell.textContent = moyenne.toFixed(2);
+                avgCell.style.color = moyenne >= 10 ? "#4361ee" : "#f72585";
+                return { moyenne, coefficient };
+            } else {
+                avgCell.textContent = "-";
+                avgCell.style.color = "#333";
+                return null;
+            }
+        }
+
+        // Calculer la moyenne générale
+        function calculateGlobalAverage() {
+            const modules = modulesData[currentSemester];
+            let totalCoefficients = 0;
+            let totalPondere = 0;
+            let allModulesFilled = true;
+            let totalCredits = 0;
+            let modulesPassed = 0;
+            let totalModules = modules.length;
+            
+            // Calculer pour chaque module
+            modules.forEach((module, index) => {
+                const moduleId = `module-${currentSemester}-${index}`;
+                const result = calculateModuleAverage(moduleId, module.coef);
+                
+                if (result) {
+                    totalPondere += result.moyenne * module.coef;
+                    totalCoefficients += module.coef;
+                    totalCredits += module.credits;
+                    
+                    if (result.moyenne >= 10) {
+                        modulesPassed++;
+                    }
+                } else {
+                    allModulesFilled = false;
+                }
+            });
+            
+            // Vérifier si tous les modules sont remplis
+            if (!allModulesFilled || totalCoefficients === 0) {
+                alert("Veuillez remplir toutes les notes (CC et Examen) pour tous les modules avant de calculer la moyenne générale.");
+                return;
+            }
+            
+            // Calculer la moyenne générale
+            const moyenneGenerale = totalPondere / totalCoefficients;
+            const isPassed = moyenneGenerale >= 10;
+            
+            // Afficher les résultats
+            displayResults(moyenneGenerale, totalCoefficients, totalCredits, modulesPassed, totalModules, isPassed);
+        }
+
+        // Afficher les résultats
+        function displayResults(moyenneGenerale, totalCoefficients, totalCredits, modulesPassed, totalModules, isPassed) {
+            const resultsContainer = document.getElementById('results-container');
+            const validationStatus = document.getElementById('validation-status');
+            
+            resultsContainer.innerHTML = `
+                <div class="result-card fade-in">
+                    <h4><i class="fas fa-chart-line"></i> Moyenne Générale</h4>
+                    <div class="result-value ${isPassed ? 'passed' : 'failed'}">
+                        ${moyenneGenerale.toFixed(2)}/20
+                    </div>
+                    <p class="result-details">Basée sur ${totalCoefficients} coefficients</p>
+                </div>
+                <div class="result-card fade-in">
+                    <h4><i class="fas fa-check-circle"></i> Modules Validés</h4>
+                    <div class="result-value ${modulesPassed === totalModules ? 'passed' : (modulesPassed >= totalModules/2 ? 'passed' : 'failed')}" 
+                         style="${modulesPassed === totalModules ? '' : (modulesPassed >= totalModules/2 ? 'color:#7209b7' : '')}">
+                        ${modulesPassed}/${totalModules}
+                    </div>
+                    <p class="result-details">${modulesPassed >= totalModules/2 ? 'Plus de la moitié validée' : 'Moins de la moitié validée'}</p>
+                </div>
+                <div class="result-card fade-in">
+                    <h4><i class="fas fa-star"></i> Crédits Accumulés</h4>
+                    <div class="result-value" style="color:#7209b7;">
+                        ${totalCredits}
+                    </div>
+                    <p class="result-details">Total des crédits du semestre</p>
+                </div>
+            `;
+            
+            resultsContainer.style.display = 'grid';
+            
+            // Afficher le statut de validation
+            validationStatus.textContent = isPassed 
+                ? `Félicitations ! Le semestre ${currentSemester} est validé avec une moyenne de ${moyenneGenerale.toFixed(2)}/20.` 
+                : `Le semestre ${currentSemester} n'est pas validé. Moyenne: ${moyenneGenerale.toFixed(2)}/20 (minimum requis: 10/20).`;
+            
+            validationStatus.className = `validation-status ${isPassed ? 'passed' : 'failed'} fade-in`;
+            validationStatus.style.display = 'block';
+        }
+
+        // Réinitialiser toutes les données
+        function resetAll() {
+            if (confirm("Voulez-vous vraiment réinitialiser toutes les notes de ce semestre ?")) {
+                moduleNotes = {};
+                localStorage.removeItem('moduleNotes');
+                loadSemesterModules(currentSemester);
+                
+                // Cacher les résultats
+                document.getElementById('results-container').style.display = 'none';
+                document.getElementById('validation-status').style.display = 'none';
+            }
+        }
+
+        // Fonction pour remplir des notes d'exemple (pour tester)
+        function fillExampleNotes() {
+            const modules = modulesData[currentSemester];
+            modules.forEach((module, index) => {
+                const moduleId = `module-${currentSemester}-${index}`;
+                const ccNote = (Math.random() * 5 + 10).toFixed(1); // Entre 10 et 15
+                const examNote = (Math.random() * 5 + 10).toFixed(1); // Entre 10 et 15
+                
+                document.getElementById(`${moduleId}-cc`).value = ccNote;
+                document.getElementById(`${moduleId}-exam`).value = examNote;
+                
+                saveModuleNote(moduleId, 'cc', ccNote);
+                saveModuleNote(moduleId, 'exam', examNote);
+                calculateModuleAverage(moduleId, module.coef);
+            });
+            
+            // Calculer la moyenne générale après 1 seconde
+            setTimeout(calculateGlobalAverage, 100);
+        }
+
+        // Exposer la fonction de remplissage d'exemple à la console pour le débogage
+        window.fillExampleNotes = fillExampleNotes;
+    </script>
+</body>
+</html>
